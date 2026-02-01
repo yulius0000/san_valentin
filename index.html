@@ -2,12 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>San Valentín 💘</title>
   <style>
     body {
       font-family: 'Comic Sans MS', cursive, sans-serif;
       text-align: center;
-      background-color: #ffd1dc; /* Rosado pastel */
+      background-color: #ffd1dc;
       color: #b30059;
       height: 100vh;
       overflow: hidden;
@@ -47,6 +48,7 @@
       font-size: 1.5em;
       font-weight: bold;
       text-shadow: 1px 1px #fff;
+      margin-bottom: 20px;
     }
     .heart {
       position: absolute;
@@ -66,22 +68,19 @@
   <h1>¿Quieres ser mi San Valentín? 💘</h1>
   <button id="yes">Sí</button>
   <button id="no">No</button>
-
   <div id="mensaje"></div>
 
   <script>
     const yesButton = document.getElementById('yes');
     const noButton = document.getElementById('no');
     const mensaje = document.getElementById('mensaje');
-
-    // Colores para los corazones
     const colores = ['#ff66b2','#ff99cc','#ff4d94','#ffb3c6','#ff80aa'];
+    let noClicks = 0;
 
-    // Botón "Sí" -> mensaje + corazones grandes
+    // Botón Sí
     yesButton.addEventListener('click', () => {
       mensaje.textContent = "Gracias mi amor, prometo darte el mejor día de tu vida. Te amo mucho ❤️";
 
-      // Crear 10 corazones grandes flotantes al presionar Sí
       for (let i = 0; i < 10; i++) {
         const heart = document.createElement('div');
         heart.classList.add('heart');
@@ -94,19 +93,26 @@
       }
     });
 
-    // Botón "No" -> huye del cursor
-    noButton.addEventListener('mousemove', () => {
+    // Botón No (funciona con mouse y touch)
+    function moverNo() {
       const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
       const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
       noButton.style.left = x + 'px';
       noButton.style.top = y + 'px';
-    });
+      noClicks++;
+      if(noClicks === 3){
+        mensaje.textContent = "😅 ¡Aún intentas decir no, pero te quiero igual! 💖";
+      }
+    }
+
+    noButton.addEventListener('mousemove', moverNo);
+    noButton.addEventListener('touchstart', moverNo);
 
     noButton.addEventListener('click', () => {
       mensaje.textContent = "😅 ¡Tratar de decir no fue valiente, pero aún así te quiero 💖!";
     });
 
-    // Corazones pequeños flotando y rebotando de fondo constantemente
+    // Corazones flotando de fondo
     function crearCorazonFondo() {
       const heart = document.createElement('div');
       heart.classList.add('heart');
@@ -118,8 +124,7 @@
       setTimeout(() => heart.remove(), 4000);
     }
 
-    setInterval(crearCorazonFondo, 250); // cada 0.25 segundos aparece un corazón
+    setInterval(crearCorazonFondo, 250);
   </script>
 </body>
-
 </html>
